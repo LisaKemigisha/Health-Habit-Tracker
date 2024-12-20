@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Hours</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">
+            <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Health Habit Tracker</a>
+        </h1>
+
+        <h2 class="text-center">Sleep Hours Tracking</h2>
+
+        <!-- Dropdown to Select Month and Year -->
+        <form method="GET" action="{{ url_for('sleep') }}" class="mb-4">
+            <label for="month">Select Month:</label>
+            <select id="month" name="month" class="form-select w-auto d-inline">
+                {% for option in month_options %}
+                    <option value="{{ option.month }}" {% if selected_month == option.month %}selected{% endif %}>
+                        {{ option.label }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="year">Select Year:</label>
+            <select id="year" name="year" class="form-select w-auto d-inline">
+                {% for year in years_in_data %}
+                    <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>
+                        {{ year }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn btn-primary">View</button>
+        </form>
+
+        <!-- Chart -->
+        <canvas id="sleepChart" width="400" height="200"></canvas>
+
+        <script>
+            const ctx = document.getElementById('sleepChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ days | tojson }},
+                    datasets: [{
+                        label: 'Sleep Hours',
+                        data: {{ values | tojson }},
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            suggestedMax: 12  // Adjust Y-axis for sleep hours
+                        },
+                    },
+                },
+            });
+        </script>
+
+        <!-- Form to Add Sleep Hours -->
+        <form method="POST" action="/add_sleep" class="mb-4">
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+            <label for="hours">Sleep Hours:</label>
+            <input type="number" id="hours" name="hours" step="0.1" min="0" required>
+            <button type="submit" class="btn btn-success">Add Sleep Hours</button>
+        </form>
+
+        <!-- Back to Dashboard Button -->
+        <a href="{{ url_for('home') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+    </div>
+</body>
+</html>
+
+
+

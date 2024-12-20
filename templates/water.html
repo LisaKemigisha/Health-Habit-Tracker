@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Intake</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">
+            <a href="{{ url_for('home') }}" style="text-decoration: none; color: inherit;">Health Habit Tracker</a>
+        </h1>
+
+        <h2 class="text-center">Water Intake Tracking</h2>
+
+        <!-- Month and Year Selection -->
+        <form method="GET" action="/water" class="mb-4">
+            <label for="month">Select Month:</label>
+            <select id="month" name="month" class="form-select w-auto d-inline">
+                {% for option in month_options %}
+                    <option value="{{ option.month }}" {% if selected_month == option.month %}selected{% endif %}>
+                        {{ option.label }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="year">Select Year:</label>
+            <select id="year" name="year" class="form-select w-auto d-inline">
+                {% for year in year_options %}
+                    <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>
+                        {{ year }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="btn btn-primary">View</button>
+        </form>
+
+        <!-- Chart -->
+        <canvas id="waterChart" width="400" height="200"></canvas>
+
+        <script>
+            const ctx = document.getElementById('waterChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: {{ days | tojson }},
+                    datasets: [{
+                        label: 'Water Intake (liters)',
+                        data: {{ values | tojson }},
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true, suggestedMax: 5 }
+                    },
+                },
+            });
+        </script>
+
+        <a href="{{ url_for('home') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+    </div>
+</body>
+</html>

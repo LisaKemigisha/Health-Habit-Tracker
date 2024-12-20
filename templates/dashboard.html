@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Habit Tracker</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('home') }}">Health Habit Tracker</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center">Dashboard</h1>
+        <p class="text-center">Monitor and improve your health habits with ease.</p>
+        <div class="row mt-4">
+            <!-- Water Intake Section -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Water Intake</h5>
+                        <a href="{{ url_for('water') }}" class="btn btn-primary">Track Water</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Sleep Hours Section -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Sleep Hours</h5>
+                        <a href="{{ url_for('sleep') }}" class="btn btn-success">Track Sleep</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Activity Hours Section -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Activity Hours</h5>
+                        <a href="{{ url_for('activity') }}" class="btn btn-warning">Track Activity</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
